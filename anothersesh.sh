@@ -1,7 +1,7 @@
 #!/bin/bash
 
-echo 1: Start a second desktop enviroment
-echo 2: End this second desktop enviroment
+echo 1: Start a second desktop environment
+echo 2: End this second desktop environment
 read -p "choice> " choice
 
 if [  "$choice" = "1" ]; then
