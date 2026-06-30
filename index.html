@@ -7,26 +7,43 @@
   <body>
    <h1>     Install Options: </h1>
     
-    <a href="anothersesh.sh" download="anothersesh.sh">
-<button class="rainbow-neon-download" onclick="forceDownload()">
+<h1>Install Options:</h1>
+
+<!-- Your styled button -->
+<button class="rainbow-neon-download" onclick="generateDownload()">
   📥 Download Script
 </button>
 
 <script>
-function forceDownload() {
-  fetch('anothersesh.sh')
-    .then(response => response.blob())
-    .then(blob => {
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'anothersesh.sh';
-      document.body.appendChild(a);
-      a.click();
-      window.URL.revokeObjectURL(url);
-      a.remove();
-    })
-    .catch(() => alert('Download failed. Use the curl command below!'));
+function generateDownload() {
+  // Your exact shell script formatted for JavaScript
+  const scriptContent = `#!/bin/bash
+
+echo 1: Start a second desktop environment
+echo 2: End this second desktop environment
+read -p "choice> " choice
+
+if [ "$choice" = "1" ]; then
+   dbus-run-session startplasma-wayland --device /dev/tty3
+else
+   qdbus org.kde.Shutdown /Shutdown org.kde.Shutdown.logout
+fi`;
+
+  // Creates the file in the browser memory
+  const blob = new Blob([scriptContent], { type: 'text/plain' });
+  const downloadUrl = URL.createObjectURL(blob);
+  
+  // Triggers the download prompt automatically
+  const temporaryLink = document.createElement('a');
+  temporaryLink.href = downloadUrl;
+  temporaryLink.download = 'anothersesh.sh';
+  
+  document.body.appendChild(temporaryLink);
+  temporaryLink.click();
+  
+  // Cleanup memory
+  URL.revokeObjectURL(downloadUrl);
+  temporaryLink.remove();
 }
 </script>
 
@@ -40,57 +57,54 @@ function forceDownload() {
   letter-spacing: 1px;
   text-transform: uppercase;
   cursor: pointer;
-
+  
   /* Moving Rainbow Background */
   background: linear-gradient(90deg, #ff007f, #ff7f00, #ffff00, #00ff00, #00ffff, #0000ff, #7f00ff, #ff007f);
   background-size: 400% 100%;
-
+  
   /* Text & Border */
-  color: #20003c; /* Deep purple text for high contrast */
+  color: #20003c;
   border: 3px solid #20003c;
   border-radius: 50px;
-
+  
   /* Multicolored Neon Base Shadow */
-  box-shadow:
-    0 0 10px rgba(255, 0, 127, 0.5),   /* Pink core */
-    0 0 20px rgba(0, 255, 255, 0.3),   /* Cyan aura */
-    0 0 30px rgba(127, 0, 255, 0.2);   /* Purple environment */
-
+  box-shadow: 
+    0 0 10px rgba(255, 0, 127, 0.5),
+    0 0 20px rgba(0, 255, 255, 0.3),
+    0 0 30px rgba(127, 0, 255, 0.2);
+    
   /* Smooth Animations */
   transition: all 0.3s ease-in-out;
   animation: rainbow-flow 8s linear infinite;
 }
 
-/* Hover Interaction: Overdrive Glow & Lift */
+/* Hover Interaction */
 .rainbow-neon-download:hover {
   transform: translateY(-4px);
   color: #000000;
   border-color: #000000;
-
-  /* Intense Stacked Rainbow Neon Glow */
-  box-shadow:
-    0 0 15px #ff007f,  /* Neon Pink */
-    0 0 35px #00ffff,  /* Neon Cyan */
-    0 0 65px #7f00ff,  /* Neon Purple */
-    0 0 100px #ff7f00; /* Neon Orange */
+  box-shadow: 
+    0 0 15px #ff007f,
+    0 0 35px #00ffff,
+    0 0 65px #7f00ff,
+    0 0 100px #ff7f00;
 }
 
-/* Click Interaction: Physical Press */
+/* Click Interaction */
 .rainbow-neon-download:active {
   transform: translateY(1px);
-  box-shadow:
+  box-shadow: 
     0 0 10px #ff007f,
     0 0 20px #00ffff;
 }
 
-/* The Animation Loop */
+/* Background Animation Loop */
 @keyframes rainbow-flow {
   0% { background-position: 0% 50%; }
   100% { background-position: 400% 50%; }
 }
 </style>
 
-</a>
 <p> Or: curl -sSL https://raw.githubusercontent.com/lkiii256/2nd-Desktop/refs/heads/main/anothersesh.sh | bash
     <header></header>
     <main></main>
