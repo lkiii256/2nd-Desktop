@@ -8,10 +8,28 @@
    <h1>     Install Options: </h1>
     
     <a href="anothersesh.sh" download="anothersesh.sh">
-  <button class="rainbow-neon-download">
+<button class="rainbow-neon-download" onclick="forceDownload()">
   📥 Download Script
 </button>
-    </a>
+
+<script>
+function forceDownload() {
+  fetch('anothersesh.sh')
+    .then(response => response.blob())
+    .then(blob => {
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'anothersesh.sh';
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      a.remove();
+    })
+    .catch(() => alert('Download failed. Use the curl command below!'));
+}
+</script>
+
 <style>
 .rainbow-neon-download {
   /* Layout & Sizing */
